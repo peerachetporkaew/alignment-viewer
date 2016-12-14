@@ -1,4 +1,4 @@
-webpy-Aignment Editor
+webpy-Alignment Editor
 ==============
 
 Alignment Editor

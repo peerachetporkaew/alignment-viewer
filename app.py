@@ -3,38 +3,7 @@ import web
 from jinja2 import Environment
 from jinja2.loaders import DictLoader
 env = Environment(loader=DictLoader({
-'child.html': u'''\
-
-<html>
-<head>
-    <script src='jquery.js'></script>
-    <script src='bootstrap?path=js'></script>
-    <link href="bootstrap?path=css" rel="stylesheet" />
-</head>
-
-<body style="margin : 20px;">
-<script src='align.js'></script>
-    <script>
-    $(function (){
-        RenderEditor("This is a pen","This is a book");
-    });
-    
-    </script>
-    <div id="divSrc">
-    
-    </div>
-    <br/>
-    <div id="divTrg">
-    
-    </div>
-    <br/><br/>
-    <button class="btn btn-primary" onclick="Confirm();">Confirm</button>
-    <button class="btn btn-primary" onclick="Cancel();" style="margin-left : 5px;">Cancel</button>
-</body>
-</html>
-
-''',
-
+'child.html': open("child.html").read(),
 'align.js' : open("align.js").read(),
 'jquery.js' : open("jquery.js").read(),
 'bootstrap.js': open("bootstrap.min.js").read(),
@@ -56,20 +25,24 @@ urls = (
     r'/bootstrap','Bootstrap'
     )
 
+data = open("alignment.aln").readlines()
+current_line = 0
+
 app = web.application(urls, globals())
 
 class Index:
-	#http://localhost:8080/?id=John
+    #http://localhost:8080/?id=John
     def GET(self):
-		user_data = web.input(id="no data")
-		name = user_data.id
-		return tmpl.render({"name" : name})
+        user_data = web.input(line=0)
+        lineno = int(user_data.line)
+        src,trg,aln = data[lineno].split("\t")
+        return tmpl.render({"src" : src, "trg" : trg, "aln" : aln, "line" : lineno})
 
 class AlignJS:
     def GET(self):
-        return jsscript.render() 
-    
-class JqueryJS:    
+        return jsscript.render()
+
+class JqueryJS:
     def GET(self):
         return jquery.render()
 

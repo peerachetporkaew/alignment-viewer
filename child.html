@@ -1,0 +1,82 @@
+<html>
+<head>
+    <script src='jquery.js'></script>
+    <script src='bootstrap?path=js'></script>
+    <link href="bootstrap?path=css" rel="stylesheet" />
+</head>
+
+<body style="margin : 20px;">
+    <div id="divSrc">{{src}}</div>
+    <div id="divTrg">{{trg}}</div>
+    <div id="divAln">{{aln}}</div>
+
+<style>
+
+body{
+	font-size : 28px;
+}
+
+.highlight{
+	color : white;
+	background-color : blue;
+}
+
+</style>
+
+<script>
+
+var alnL = [];
+var trgLength = 0;
+
+$(document).ready(function (){
+	var src = $("#divSrc").html().split(" ");
+	var trg = $("#divTrg").html().split(" ");
+	var aln = $("#divAln").html().split(" ");
+
+	
+	for(var i=0; i < src.length; i++){
+		alnL.push([]);
+	}
+	
+	for(var i=0; i < aln.length; i++){
+		temp = aln[i].split("-")
+		sID = parseInt(temp[0])
+		tID = parseInt(temp[1])
+		alnL[sID].push(tID)
+	}
+	
+	srcDiv = "";
+	for(var i=0; i < src.length; i++){
+		srcDiv += "<span id='s_" + i + "' onmouseout='Clear();' onmouseover='SRC_over(" + i + ");'>" + src[i] + "</span> ";
+	}
+	$("#divSrc").html(srcDiv);
+	
+	trgDiv = "";
+	trgLength = trg.length;
+	for(var i=0; i < trg.length; i++){
+		trgDiv += "<span id='t_" + i + "' onmouseout='Clear();' onmouseover='TRG_over(" + i + ");'>" + trg[i] + "</span> ";
+	}
+	$("#divTrg").html(trgDiv);	
+	
+});
+
+function SRC_over(id){
+	for(var i=0; i < alnL[id].length; i++){
+		$("#t_" + alnL[id][i]).addClass("highlight");
+	}
+}
+
+function Clear(){
+	for(var i=0; i < trgLength; i++){
+		$("#t_" + i).removeClass("highlight");
+	}
+}
+
+function next_page(){
+	window.location="?line=" + (1+{{line}}) + "";
+}
+
+</script> 
+    <button class="btn btn-primary" onclick="next_page();">Next</button>
+</body>
+</html>

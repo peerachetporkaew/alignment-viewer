@@ -1,8 +1,11 @@
-webpy-Alignment Editor
+webpy-Alignment Viewer
 ==============
 
-Alignment Editor
+Alignment Viewer
 
 Usage
 ==============
     python app.py
+    
+Change alignment.aln (tab separated : src trg aln)
+
